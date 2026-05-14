@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<title>🏖️ More</title>
+<style>
+*,*::before,*::after{-webkit-box-sizing:border-box;box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --ocean:#0d3d52;--ocean2:#1a5f7a;
+  --sand:#f5f0e8;--sand2:#ece6d8;--sand3:#e0dbd0;
+  --text:#1a1a16;--text3:#aaa;
+  --white:#fff;--green:#4caf82;--yellow:#f0c040;
+  --c0:#1a5f7a;--c1:#c9922a;--c2:#7a2a6a;
+}
+html{-webkit-text-size-adjust:100%;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--sand);color:var(--text);min-height:100vh;max-width:540px;margin:0 auto;}
+
+/* HEADER */
+.hdr{background:var(--ocean);padding:12px 14px 0;position:sticky;top:0;z-index:100;}
+.hdr-top{display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;-webkit-align-items:flex-start;align-items:flex-start;margin-bottom:8px;}
+.hdr-title{font-size:19px;font-weight:800;color:#fff;letter-spacing:-0.5px;}
+.hdr-sync{font-size:11px;color:rgba(255,255,255,0.5);margin-top:3px;display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;gap:5px;}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;-webkit-transition:background 0.3s;transition:background 0.3s;}
+.dot.sy{background:var(--yellow);-webkit-animation:pulse 0.8s infinite;animation:pulse 0.8s infinite;}
+.dot.off{background:#e05a3a;}
+@-webkit-keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.hdr-r{display:-webkit-flex;display:flex;-webkit-flex-direction:column;flex-direction:column;-webkit-align-items:flex-end;align-items:flex-end;gap:5px;}
+.lang-row{display:-webkit-flex;display:flex;gap:4px;}
+.lbtn,.rbtn{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.22);border-radius:99px;padding:5px 10px;color:rgba(255,255,255,0.7);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;-webkit-appearance:none;appearance:none;}
+.lbtn.on,.rbtn.on{background:rgba(255,255,255,0.28);border-color:rgba(255,255,255,0.55);color:#fff;}
+.rate-wrap{display:-webkit-flex;display:flex;}
+.rate-edit{display:-webkit-flex;display:flex;gap:5px;-webkit-align-items:center;align-items:center;}
+.rate-edit input{width:68px;height:32px;border-radius:7px;border:none;padding:0 8px;font-size:13px;outline:none;-webkit-appearance:none;}
+.rate-edit button{height:32px;padding:0 10px;border:none;border-radius:7px;font-size:12px;cursor:pointer;font-family:inherit;-webkit-appearance:none;}
+.rs{background:var(--green);color:#fff;}
+.rc{background:rgba(255,255,255,0.15);color:#fff;}
+.pairs{display:-webkit-flex;display:flex;gap:5px;-webkit-flex-wrap:wrap;flex-wrap:wrap;margin:6px 0 10px;}
+.pchip{border-radius:99px;padding:3px 9px;font-size:11px;color:#fff;}
+.tabs{display:-webkit-flex;display:flex;gap:3px;background:rgba(255,255,255,0.1);border-radius:10px 10px 0 0;padding:4px 4px 0;}
+.tbtn{-webkit-flex:1;flex:1;padding:8px 2px;border:none;border-radius:7px 7px 0 0;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;background:transparent;color:rgba(255,255,255,0.6);-webkit-appearance:none;}
+.tbtn.on{background:var(--sand);color:var(--ocean);}
+
+/* CONTENT */
+.content{padding:12px 12px 90px;}
+.card{background:var(--white);border-radius:14px;padding:14px;margin-bottom:10px;border:1px solid var(--sand3);}
+.ctitle{font-size:11px;font-weight:700;letter-spacing:0.09em;text-transform:uppercase;color:var(--text3);margin-bottom:12px;}
+.field{margin-bottom:10px;}
+.field label{display:block;font-size:12px;color:var(--text3);margin-bottom:4px;}
+.finput{height:44px;width:100%;padding:0 12px;border:1.5px solid var(--sand3);border-radius:9px;font-size:15px;font-family:inherit;color:var(--text);background:var(--white);outline:none;-webkit-appearance:none;appearance:none;display:block;}
+.finput:focus{border-color:var(--ocean2);}
+.two{display:-webkit-flex;display:flex;gap:10px;}
+.two > *{-webkit-flex:1;flex:1;}
+.ctog{display:-webkit-flex;display:flex;background:var(--sand2);border-radius:9px;padding:3px;gap:3px;height:44px;}
+.cbtn{-webkit-flex:1;flex:1;border:none;border-radius:7px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;background:transparent;color:var(--text3);-webkit-appearance:none;}
+.cbtn.on{background:var(--white);color:var(--text);-webkit-box-shadow:0 1px 3px rgba(0,0,0,0.1);box-shadow:0 1px 3px rgba(0,0,0,0.1);}
+
+/* COUPLE PAYER SELECTOR */
+.cpgrid{display:-webkit-flex;display:flex;gap:7px;}
+.cpbtn{-webkit-flex:1;flex:1;padding:10px 6px;border:2px solid var(--sand3);border-radius:11px;background:var(--white);cursor:pointer;font-family:inherit;font-size:12px;font-weight:700;color:#666;display:-webkit-flex;display:flex;-webkit-flex-direction:column;flex-direction:column;-webkit-align-items:center;align-items:center;gap:5px;-webkit-appearance:none;-webkit-transition:all 0.15s;transition:all 0.15s;}
+.cpbtn.on{border-color:var(--ac,#1a5f7a);background:var(--ab,#e8f4f8);color:var(--ac,#1a5f7a);}
+.cavs{display:-webkit-flex;display:flex;gap:-4px;}
+.av{width:26px;height:26px;border-radius:50%;display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;-webkit-justify-content:center;justify-content:center;font-size:10px;font-weight:700;border:2px solid var(--white);}
+
+.subtn{width:100%;height:48px;background:var(--ocean);color:#fff;border:none;border-radius:11px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:4px;-webkit-appearance:none;}
+.subtn:active{background:var(--ocean2);}
+
+/* LIST */
+.eitem{display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--sand2);}
+.eitem:last-of-type{border-bottom:none;}
+.einfo{-webkit-flex:1;flex:1;min-width:0;}
+.edesc{font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.esub{font-size:12px;color:var(--text3);margin-top:2px;}
+.eamt{text-align:right;-webkit-flex-shrink:0;flex-shrink:0;}
+.emain{font-size:14px;font-weight:700;}
+.ealt{font-size:11px;color:#bbb;}
+.delbtn{background:none;border:none;cursor:pointer;color:#ddd;font-size:18px;padding:0 4px;-webkit-flex-shrink:0;flex-shrink:0;line-height:1;-webkit-appearance:none;}
+.totrow{display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;padding-top:12px;margin-top:4px;border-top:1px solid var(--sand3);font-weight:700;}
+
+/* SUMMARY */
+.grand{background:var(--ocean);border-radius:14px;padding:14px 16px;margin-bottom:10px;}
+.grand .lbl{font-size:12px;color:rgba(255,255,255,0.55);margin-bottom:4px;}
+.grand .amt{font-size:22px;font-weight:800;color:#fff;}
+.grand .sub{font-size:12px;color:rgba(255,255,255,0.4);margin-top:4px;}
+
+.cprow{display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;gap:10px;padding:12px 13px;border-radius:11px;margin-bottom:8px;border:1px solid transparent;}
+.cpicon{width:38px;height:38px;border-radius:50%;display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;-webkit-justify-content:center;justify-content:center;font-size:19px;-webkit-flex-shrink:0;flex-shrink:0;}
+.badge{border-radius:99px;padding:4px 11px;font-size:13px;font-weight:700;-webkit-flex-shrink:0;flex-shrink:0;}
+.bp{background:#d4edda;color:#155724;}
+.bm{background:#fde8e2;color:#e05a3a;}
+.bz{background:var(--sand2);color:var(--text3);}
+
+.txnrow{display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;gap:8px;background:#fdf0d8;border:1px solid #f0d9b0;border-radius:10px;padding:11px 12px;margin-bottom:8px;}
+.txnamt{font-weight:800;color:#c9922a;font-size:15px;margin-left:4px;}
+
+.empty{text-align:center;padding:32px 0;color:var(--text3);font-size:14px;}
+.dtrow{display:-webkit-flex;display:flex;-webkit-justify-content:flex-end;justify-content:flex-end;margin-bottom:10px;}
+.dtog{display:-webkit-flex;display:flex;background:var(--sand2);border-radius:8px;padding:3px;gap:3px;}
+.dbtn{padding:4px 14px;border:none;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;background:transparent;color:var(--text3);-webkit-appearance:none;}
+.dbtn.on{background:var(--white);color:var(--text);-webkit-box-shadow:0 1px 3px rgba(0,0,0,0.1);box-shadow:0 1px 3px rgba(0,0,0,0.1);}
+.divider{height:1px;background:var(--sand2);margin:8px 0;}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-top">
+    <div>
+      <div class="hdr-title" id="hT">🏖️ More</div>
+      <div class="hdr-sync"><span class="dot" id="dot"></span><span id="stxt">...</span></div>
+    </div>
+    <div class="hdr-r">
+      <div class="lang-row">
+        <button class="lbtn on" id="lSR" onclick="setLang('sr')">🇷🇸 SR</button>
+        <button class="lbtn" id="lEN" onclick="setLang('en')">🇬🇧 EN</button>
+      </div>
+      <div class="rate-wrap" id="rw">
+        <button class="rbtn" onclick="eRate()">💱 1€ = <span id="rd">117</span> RSD</button>
+      </div>
+    </div>
+  </div>
+  <div class="pairs" id="pchips"></div>
+  <div class="tabs">
+    <button class="tbtn on" id="tb0" onclick="goTab(0)">➕ <span class="tsp" data-k="tAdd">Dodaj</span></button>
+    <button class="tbtn" id="tb1" onclick="goTab(1)">🧾 <span class="tsp" data-k="tList">Lista</span></button>
+    <button class="tbtn" id="tb2" onclick="goTab(2)">📊 <span class="tsp" data-k="tSum">Obračun</span></button>
+  </div>
+</div>
+
+<div class="content" id="content"></div>
+
+<script>
+// ── i18n ─────────────────────────────────────────────
+var I = {
+  sr:{
+    title:'More — Troškovi', conn:'Povezano · uživo', sav:'Čuvam...', off:'Offline · pokušavam...',
+    tAdd:'Dodaj', tList:'Lista', tSum:'Obračun',
+    nExp:'Novi trošak', descL:'Opis', ph:'Roštilj, Suncobrani, Gorivo...',
+    amtL:'Iznos', curL:'Valuta', paidBy:'Koji par plaća?', addBtn:'Dodaj trošak +',
+    expT:'Troškovi', noExp:'Još nema troškova', total:'Ukupno',
+    totSpent:'Ukupno potrošeno', perCouple:'Po paru',
+    byCouple:'Po paru', owesT:'Ko kome duguje',
+    paidW:'Platili', shareW:'Deo',
+    settledAll:'🎉 Svi namireni!', addFirst:'Dodaj troškove gore.',
+    owesArrow:'duguje →',
+    couples:['Sandra & Sale','Milica & Petar','Katarina & Miloš'],
+  },
+  en:{
+    title:'Beach — Expenses', conn:'Connected · live', sav:'Saving...', off:'Offline · retrying...',
+    tAdd:'Add', tList:'List', tSum:'Summary',
+    nExp:'New Expense', descL:'Description', ph:'BBQ, Sunbeds, Gas...',
+    amtL:'Amount', curL:'Currency', paidBy:'Which couple pays?', addBtn:'Add expense +',
+    expT:'Expenses', noExp:'No expenses yet', total:'Total',
+    totSpent:'Total spent', perCouple:'Per couple',
+    byCouple:'By couple', owesT:'Who owes who',
+    paidW:'Paid', shareW:'Share',
+    settledAll:'🎉 All settled!', addFirst:'Add expenses above.',
+    owesArrow:'owes →',
+    couples:['Sandra & Sale','Milica & Petar','Katarina & Miloš'],
+  }
+};
+var lang = (typeof localStorage !== 'undefined' && localStorage.getItem('mlang')) || 'sr';
+function T(k){ return I[lang][k] || k; }
+
+function setLang(l) {
+  lang = l;
+  if(typeof localStorage!=='undefined') localStorage.setItem('mlang',l);
+  document.getElementById('lSR').className='lbtn'+(l==='sr'?' on':'');
+  document.getElementById('lEN').className='lbtn'+(l==='en'?' on':'');
+  document.getElementById('hT').textContent='🏖️ '+T('title');
+  var spans=document.querySelectorAll('.tsp');
+  for(var i=0;i<spans.length;i++) spans[i].textContent=T(spans[i].getAttribute('data-k'));
+  updateSync(lastSt);
+  buildPairChips();
+  render();
+}
+
+// ── Data ──────────────────────────────────────────────
+// 3 couples: 0=Sandra&Sale, 1=Milica&Petar, 2=Katarina&Miloš
+var CNAMES_SR = ['Sandra & Sale','Milica & Petar','Katarina & Miloš'];
+var CMEMBERS  = [['Sandra','Sale'],['Milica','Petar'],['Katarina','Miloš']];
+var CCOLORS   = ['#1a5f7a','#c9922a','#7a2a6a'];
+
+var state = { expenses:[], rate:117 };
+var curTab=0, curCouple=0, inCur='RSD', disCur='RSD';
+var ws, wsOk=false, lastSt='connecting';
+
+// ── WebSocket ─────────────────────────────────────────
+function connect() {
+  var proto = location.protocol==='https:'?'wss':'ws';
+  ws = new WebSocket(proto+'://'+location.host);
+  ws.onopen = function(){ wsOk=true; setSt('online'); };
+  ws.onmessage = function(e){
+    var m=JSON.parse(e.data);
+    if(m.type==='init'||m.type==='update'){
+      state=m.data;
+      document.getElementById('rd').textContent=state.rate;
+      render();
+    }
+  };
+  ws.onclose = function(){ wsOk=false; setSt('offline'); setTimeout(connect,3000); };
+  ws.onerror = function(){ ws.close(); };
+}
+function push(){
+  if(ws&&wsOk){
+    setSt('syncing');
+    ws.send(JSON.stringify({type:'update',data:state}));
+    setTimeout(function(){setSt('online');},600);
+  }
+}
+function setSt(s){ lastSt=s; updateSync(s); }
+function updateSync(s){
+  var dot=document.getElementById('dot'), txt=document.getElementById('stxt');
+  if(!dot)return;
+  dot.className='dot'+(s==='syncing'?' sy':s==='offline'?' off':'');
+  txt.textContent=s==='online'?T('conn'):s==='syncing'?T('sav'):T('off');
+}
+
+// ── Rate ──────────────────────────────────────────────
+function eRate(){
+  document.getElementById('rw').innerHTML=
+    '<div class="rate-edit">'+
+    '<input type="number" id="rIn" value="'+state.rate+'" />'+
+    '<button class="rs" onclick="sRate()">✓</button>'+
+    '<button class="rc" onclick="cRate()">✕</button>'+
+    '</div>';
+  document.getElementById('rIn').focus();
+}
+function sRate(){
+  var v=parseFloat(document.getElementById('rIn').value);
+  if(!isNaN(v)&&v>0){state.rate=v;push();}
+  cRate();
+}
+function cRate(){
+  document.getElementById('rw').innerHTML=
+    '<button class="rbtn" onclick="eRate()">💱 1€ = <span id="rd">'+state.rate+'</span> RSD</button>';
+}
+
+// ── Pair chips ────────────────────────────────────────
+function buildPairChips(){
+  var cnames=T('couples');
+  var h='';
+  for(var i=0;i<3;i++){
+    h+='<span class="pchip" style="background:'+CCOLORS[i]+'88;border:1px solid '+CCOLORS[i]+'aa">'+
+       '💑 '+cnames[i]+'</span>';
+  }
+  document.getElementById('pchips').innerHTML=h;
+}
+
+// ── Tabs ──────────────────────────────────────────────
+function goTab(t){
+  curTab=t;
+  for(var i=0;i<3;i++){
+    document.getElementById('tb'+i).className='tbtn'+(i===t?' on':'');
+  }
+  render();
+}
+
+// ── Format ────────────────────────────────────────────
+function toRSD(a,c){ return c==='EUR'?a*state.rate:a; }
+function fR(n){ return Math.round(n).toLocaleString('sr-RS')+' RSD'; }
+function fE(n){ return n.toFixed(2).replace('.',',')+' €'; }
+function fB(r){ return fR(r)+' / '+fE(r/state.rate); }
+function fmt(r){ return disCur==='EUR'?fE(r/state.rate):fR(r); }
+function fSigned(r){
+  var a=Math.abs(r), s=r>0.5?'+':r<-0.5?'-':'±';
+  return s+(disCur==='EUR'?fE(a/state.rate):Math.round(a).toLocaleString('sr-RS')+' RSD');
+}
+function bc(v){ return v>0.5?'bp':v<-0.5?'bm':'bz'; }
+
+function cplAv(ci, sz){
+  sz=sz||28;
+  var m=CMEMBERS[ci], c=CCOLORS[ci], half=Math.round(sz*0.38);
+  return '<div style="display:-webkit-flex;display:flex;margin-right:2px;">'+
+    '<div class="av" style="width:'+sz+'px;height:'+sz+'px;background:'+c+'33;color:'+c+';font-size:'+half+'px;margin-left:0px;">'+m[0].substring(0,2).toUpperCase()+'</div>'+
+    '<div class="av" style="width:'+sz+'px;height:'+sz+'px;background:'+c+'66;color:'+c+';font-size:'+half+'px;margin-left:-8px;">'+m[1].substring(0,2).toUpperCase()+'</div>'+
+  '</div>';
+}
+
+// ── Render ────────────────────────────────────────────
+function render(){
+  var el=document.getElementById('content');
+  if(curTab===0) el.innerHTML=rAdd();
+  else if(curTab===1) el.innerHTML=rList();
+  else el.innerHTML=rSum();
+}
+
+function rAdd(){
+  var cnames=T('couples');
+  var btns='';
+  for(var i=0;i<3;i++){
+    var on=curCouple===i;
+    btns+='<button class="cpbtn'+(on?' on':'')+'" '+
+      'style="--ac:'+CCOLORS[i]+';--ab:'+CCOLORS[i]+'18" '+
+      'onclick="setCP('+i+')">'+
+      cplAv(i,26)+
+      '<span style="font-size:11px">'+cnames[i]+'</span>'+
+      '</button>';
+  }
+  return '<div class="card">'+
+    '<div class="ctitle">'+T('nExp')+'</div>'+
+    '<div class="field"><label>'+T('descL')+'</label>'+
+    '<input class="finput" type="text" id="dIn" placeholder="'+T('ph')+'" /></div>'+
+    '<div class="two">'+
+      '<div class="field"><label>'+T('amtL')+'</label>'+
+      '<input class="finput" type="number" id="aIn" placeholder="0" min="0" '+
+      'step="'+(inCur==='EUR'?'0.01':'1')+'" inputmode="decimal" /></div>'+
+      '<div class="field"><label>'+T('curL')+'</label>'+
+      '<div class="ctog">'+
+        '<button class="cbtn'+(inCur==='RSD'?' on':'')+'" onclick="setCur(\'RSD\')">RSD</button>'+
+        '<button class="cbtn'+(inCur==='EUR'?' on':'')+'" onclick="setCur(\'EUR\')">EUR</button>'+
+      '</div></div>'+
+    '</div>'+
+    '<div class="field"><label>'+T('paidBy')+'</label>'+
+    '<div class="cpgrid">'+btns+'</div></div>'+
+    '<button class="subtn" onclick="addE()">'+T('addBtn')+'</button>'+
+  '</div>';
+}
+
+function rList(){
+  var tot=0;
+  for(var j=0;j<state.expenses.length;j++) tot+=toRSD(state.expenses[j].amount,state.expenses[j].currency);
+  var cnames=T('couples');
+  var rows='';
+  if(state.expenses.length===0){
+    rows='<div class="empty"><div style="font-size:32px;margin-bottom:8px">🌊</div>'+T('noExp')+'</div>';
+  } else {
+    for(var k=0;k<state.expenses.length;k++){
+      var e=state.expenses[k];
+      var r=toRSD(e.amount,e.currency);
+      var sa=e.currency!==disCur;
+      var alt=e.currency==='EUR'?fE(e.amount):e.amount.toLocaleString('sr-RS')+' RSD';
+      rows+='<div class="eitem">'+
+        cplAv(e.couple,30)+
+        '<div class="einfo"><div class="edesc">'+e.desc+'</div>'+
+        '<div class="esub">'+cnames[e.couple]+'</div></div>'+
+        '<div class="eamt"><div class="emain">'+fmt(r)+'</div>'+(sa?'<div class="ealt">'+alt+'</div>':'')+
+        '</div><button class="delbtn" onclick="delE('+e.id+')">✕</button></div>';
+    }
+    rows+='<div class="totrow"><span style="font-size:13px;color:var(--text3)">'+T('total')+'</span>'+
+      '<span style="font-size:14px">'+fB(tot)+'</span></div>';
+  }
+  return dispToggle()+
+    '<div class="card"><div class="ctitle">'+T('expT')+' ('+state.expenses.length+')</div>'+rows+'</div>';
+}
+
+function rSum(){
+  var tot=0;
+  for(var j=0;j<state.expenses.length;j++) tot+=toRSD(state.expenses[j].amount,state.expenses[j].currency);
+  var perC=tot/3;
+  var cpaid=[0,0,0];
+  for(var k=0;k<state.expenses.length;k++){
+    var e=state.expenses[k];
+    cpaid[e.couple]+=toRSD(e.amount,e.currency);
+  }
+  var cbals=cpaid.map(function(p){return p-perC;});
+  var cnames=T('couples');
+
+  // Settle (greedy)
+  var deb=[],cre=[];
+  for(var i=0;i<3;i++){
+    if(cbals[i]<-0.5) deb.push({i:i,b:cbals[i]});
+    else if(cbals[i]>0.5) cre.push({i:i,b:cbals[i]});
+  }
+  deb.sort(function(a,b){return a.b-b.b;});
+  cre.sort(function(a,b){return b.b-a.b;});
+  var txns=[];
+  var di=0,ci=0;
+  while(di<deb.length&&ci<cre.length){
+    var d=deb[di],c=cre[ci],a=Math.min(-d.b,c.b);
+    if(a>0.5)txns.push({from:d.i,to:c.i,rsd:a});
+    d.b+=a;c.b-=a;
+    if(Math.abs(d.b)<0.5)di++;
+    if(Math.abs(c.b)<0.5)ci++;
+  }
+
+  // Couple rows
+  var prows='';
+  for(var pi=0;pi<3;pi++){
+    var pp=cpaid[pi], bal=cbals[pi];
+    prows+='<div class="cprow" style="background:'+CCOLORS[pi]+'0d;border-color:'+CCOLORS[pi]+'28">'+
+      '<div class="cpicon" style="background:'+CCOLORS[pi]+'22;color:'+CCOLORS[pi]+'">💑</div>'+
+      '<div style="-webkit-flex:1;flex:1;">'+
+        '<div style="font-size:14px;font-weight:600;">'+cnames[pi]+'</div>'+
+        '<div style="font-size:12px;color:var(--text3)">'+T('paidW')+': '+fmt(pp)+' · '+T('shareW')+': '+fmt(perC)+'</div>'+
+      '</div>'+
+      '<span class="badge '+bc(bal)+'">'+fSigned(bal)+'</span>'+
+    '</div>';
+  }
+
+  // Settle rows
+  var srows='';
+  if(txns.length===0){
+    srows='<div style="color:var(--text3);font-size:14px">'+(tot>0?T('settledAll'):T('addFirst'))+'</div>';
+  } else {
+    for(var ti=0;ti<txns.length;ti++){
+      var tx=txns[ti];
+      srows+='<div class="txnrow">'+
+        cplAv(tx.from,26)+
+        '<div style="-webkit-flex:1;flex:1;font-size:13px"><strong>'+cnames[tx.from]+'</strong> '+T('owesArrow')+' <strong>'+cnames[tx.to]+'</strong></div>'+
+        cplAv(tx.to,26)+
+        '<span class="txnamt">'+fmt(tx.rsd)+'</span>'+
+      '</div>';
+    }
+  }
+
+  return dispToggle()+
+    '<div class="grand">'+
+      '<div class="lbl">'+T('totSpent')+'</div>'+
+      '<div class="amt">'+fB(tot)+'</div>'+
+      '<div class="sub">'+T('perCouple')+': '+fmt(perC)+'</div>'+
+    '</div>'+
+    '<div class="card"><div class="ctitle">'+T('byCouple')+'</div>'+prows+'</div>'+
+    '<div class="card"><div class="ctitle">'+T('owesT')+'</div>'+srows+'</div>';
+}
+
+function dispToggle(){
+  return '<div class="dtrow"><div class="dtog">'+
+    '<button class="dbtn'+(disCur==='RSD'?' on':'')+'" onclick="setDis(\'RSD\')">RSD</button>'+
+    '<button class="dbtn'+(disCur==='EUR'?' on':'')+'" onclick="setDis(\'EUR\')">EUR</button>'+
+  '</div></div>';
+}
+
+// ── Actions ───────────────────────────────────────────
+function setCP(i){ curCouple=i; render(); }
+function setCur(c){ inCur=c; render(); }
+function setDis(c){ disCur=c; render(); }
+
+function addE(){
+  var d=document.getElementById('dIn').value.trim();
+  var a=parseFloat(document.getElementById('aIn').value);
+  if(!d||isNaN(a)||a<=0)return;
+  state.expenses.push({id:Date.now(),desc:d,amount:a,currency:inCur,couple:curCouple});
+  push(); render();
+}
+function delE(id){
+  var next=[];
+  for(var i=0;i<state.expenses.length;i++) if(state.expenses[i].id!==id) next.push(state.expenses[i]);
+  state.expenses=next;
+  push(); render();
+}
+
+// ── Init ──────────────────────────────────────────────
+setLang(lang);
+buildPairChips();
+connect();
+render();
+</script>
+</body>
+</html>
