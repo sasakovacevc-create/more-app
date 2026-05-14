@@ -425,8 +425,18 @@ function dispToggle(){
 }
 
 // ── Actions ───────────────────────────────────────────
-function setCP(i){ curCouple=i; render(); }
-function setCur(c){ inCur=c; render(); }
+function saveInputs(){
+  var d=document.getElementById('dIn'), a=document.getElementById('aIn');
+  if(d) window._savedDesc=d.value;
+  if(a) window._savedAmt=a.value;
+}
+function restoreInputs(){
+  var d=document.getElementById('dIn'), a=document.getElementById('aIn');
+  if(d && window._savedDesc!==undefined) d.value=window._savedDesc;
+  if(a && window._savedAmt!==undefined) a.value=window._savedAmt;
+}
+function setCP(i){ saveInputs(); curCouple=i; render(); restoreInputs(); }
+function setCur(c){ saveInputs(); inCur=c; render(); restoreInputs(); }
 function setDis(c){ disCur=c; render(); }
 
 function addE(){
