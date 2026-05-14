@@ -425,18 +425,28 @@ function dispToggle(){
 }
 
 // ── Actions ───────────────────────────────────────────
-function saveInputs(){
-  var d=document.getElementById('dIn'), a=document.getElementById('aIn');
-  if(d) window._savedDesc=d.value;
-  if(a) window._savedAmt=a.value;
+function setCP(i){
+  curCouple=i;
+  // just update buttons, don't re-render whole form
+  var btns=document.querySelectorAll('.cpbtn');
+  for(var j=0;j<btns.length;j++){
+    if(j===i){ btns[j].classList.add('on'); }
+    else { btns[j].classList.remove('on'); }
+  }
 }
-function restoreInputs(){
-  var d=document.getElementById('dIn'), a=document.getElementById('aIn');
-  if(d && window._savedDesc!==undefined) d.value=window._savedDesc;
-  if(a && window._savedAmt!==undefined) a.value=window._savedAmt;
+function setCur(c){
+  inCur=c;
+  // just update currency buttons
+  var btns=document.querySelectorAll('.cbtn');
+  for(var j=0;j<btns.length;j++){
+    var isRSD=btns[j].textContent==='RSD';
+    if((c==='RSD'&&isRSD)||(c==='EUR'&&!isRSD)){ btns[j].classList.add('on'); }
+    else { btns[j].classList.remove('on'); }
+  }
+  // update step
+  var aIn=document.getElementById('aIn');
+  if(aIn) aIn.step=c==='EUR'?'0.01':'1';
 }
-function setCP(i){ saveInputs(); curCouple=i; render(); restoreInputs(); }
-function setCur(c){ saveInputs(); inCur=c; render(); restoreInputs(); }
 function setDis(c){ disCur=c; render(); }
 
 function addE(){
