@@ -141,7 +141,7 @@ var I = {
     paidW:'Platili', shareW:'Deo',
     settledAll:'🎉 Svi namireni!', addFirst:'Dodaj troškove gore.',
     owesArrow:'duguje →', for:'Za',
-    couples:['Sandra & Sale','Milica & Petar','Katarina & Miloš'],
+    couples:['Sandra & Sale','Milica & Petar','Katarina & Miloš','Gracijela'],
   },
   en:{
     title:'Beach — Expenses', conn:'Connected · live', sav:'Saving...', off:'Offline · retrying...',
@@ -154,20 +154,21 @@ var I = {
     paidW:'Paid', shareW:'Share',
     settledAll:'🎉 All settled!', addFirst:'Add expenses above.',
     owesArrow:'owes →', for:'For',
-    couples:['Sandra & Sale','Milica & Petar','Katarina & Miloš'],
+    couples:['Sandra & Sale','Milica & Petar','Katarina & Miloš','Gracijela'],
   }
 };
 
 var lang = (typeof localStorage!=='undefined'&&localStorage.getItem('mlang'))||'sr';
 function T(k){ return I[lang][k]||k; }
 
-var CMEMBERS = [['Sandra','Sale'],['Milica','Petar'],['Katarina','Miloš']];
-var CCOLORS  = ['#1a5f7a','#c9922a','#7a2a6a'];
+var CMEMBERS = [['Sandra','Sale'],['Milica','Petar'],['Katarina','Miloš'],['Gracijela','']];
+var CCOLORS  = ['#1a5f7a','#c9922a','#7a2a6a','#2a7a4a'];
+var CSINGLE  = [false,false,false,true]; // true = single person, not couple
 
 var state = { expenses:[], rate:117 };
 var curTab=0, curCouple=0, inCur='RSD', disCur='RSD';
 // forWhom: array of 3 booleans, default all true
-var forWhom=[true,true,true];
+var forWhom=[true,true,true,true];
 var ws, wsOk=false, lastSt='connecting';
 
 function setLang(l){
@@ -234,8 +235,9 @@ function cRate(){
 
 function buildPairChips(){
   var cnames=T('couples'),h='';
-  for(var i=0;i<3;i++){
-    h+='<span class="pchip" style="background:'+CCOLORS[i]+'88;border:1px solid '+CCOLORS[i]+'aa">💑 '+cnames[i]+'</span>';
+  for(var i=0;i<4;i++){
+    var ico=CSINGLE[i]?'👩':'💑';
+    h+='<span class="pchip" style="background:'+CCOLORS[i]+'88;border:1px solid '+CCOLORS[i]+'aa">'+ico+' '+cnames[i]+'</span>';
   }
   document.getElementById('pchips').innerHTML=h;
 }
@@ -260,6 +262,11 @@ function bc(v){ return v>0.5?'bp':v<-0.5?'bm':'bz'; }
 function cplAv(ci,sz){
   sz=sz||28;
   var m=CMEMBERS[ci],c=CCOLORS[ci],half=Math.round(sz*0.38);
+  if(CSINGLE[ci]){
+    return '<div style="display:-webkit-flex;display:flex;">'+
+      '<div class="av" style="width:'+sz+'px;height:'+sz+'px;background:'+c+'44;color:'+c+';font-size:'+half+'px;">GR</div>'+
+    '</div>';
+  }
   return '<div style="display:-webkit-flex;display:flex;">'+
     '<div class="av" style="width:'+sz+'px;height:'+sz+'px;background:'+c+'33;color:'+c+';font-size:'+half+'px;">'+m[0].substring(0,2).toUpperCase()+'</div>'+
     '<div class="av" style="width:'+sz+'px;height:'+sz+'px;background:'+c+'66;color:'+c+';font-size:'+half+'px;margin-left:-6px;">'+m[1].substring(0,2).toUpperCase()+'</div>'+
@@ -278,18 +285,18 @@ function rAdd(){
 
   // Payer buttons
   var payerBtns='';
-  for(var i=0;i<3;i++){
+  for(var i=0;i<4;i++){
     payerBtns+='<button class="cpbtn'+(curCouple===i?' on':'')+'" '+
       'style="--ac:'+CCOLORS[i]+';--ab:'+CCOLORS[i]+'18" '+
       'onclick="setCP('+i+')">'+
       cplAv(i,22)+
-      '<span>'+cnames[i]+'</span>'+
+      '<span>'+(CSINGLE[i]?'👩 ':'')+cnames[i]+'</span>'+
     '</button>';
   }
 
   // For whom buttons
   var forBtns='';
-  for(var j=0;j<3;j++){
+  for(var j=0;j<4;j++){
     var on=forWhom[j];
     forBtns+='<button class="fwbtn'+(on?' on':'')+'" '+
       'style="--ac:'+CCOLORS[j]+';--ab:'+CCOLORS[j]+'18" '+
@@ -336,7 +343,7 @@ function rList(){
       // For tags
       var tags='';
       if(e.forWhom){
-        for(var fi=0;fi<3;fi++){
+        for(var fi=0;fi<4;fi++){
           if(e.forWhom[fi]) tags+='<span class="for-tag" style="background:'+CCOLORS[fi]+'">'+cnames[fi]+'</span>';
         }
       }
@@ -361,26 +368,32 @@ function rSum(){
   // Calculate balances per couple based on forWhom
   // paid[i] = total paid by couple i
   // owed[i] = total owed by couple i (sum of their share in each expense)
-  var paid=[0,0,0], owed=[0,0,0];
+  var paid=[0,0,0,0], owed=[0,0,0,0];
   for(var k=0;k<state.expenses.length;k++){
     var e=state.expenses[k];
     var rsd=toRSD(e.amount,e.currency);
     paid[e.couple]+=rsd;
     // determine who splits this expense
-    var fw=e.forWhom||[true,true,true];
+    var fw=e.forWhom||[true,true,true,true];
     var splitCount=0;
-    for(var x=0;x<3;x++) if(fw[x]) splitCount++;
-    if(splitCount===0) splitCount=3;
-    var share=rsd/splitCount;
-    for(var y=0;y<3;y++) if(fw[y]) owed[y]+=share;
+    for(var x=0;x<4;x++){
+      if(fw[x]){
+        splitCount+=CSINGLE[x]?1:2; // single=1 person, couple=2 persons
+      }
+    }
+    if(splitCount===0) splitCount=7;
+    var rsdPerPerson=rsd/splitCount;
+    for(var y=0;y<4;y++){
+      if(fw[y]) owed[y]+=rsdPerPerson*(CSINGLE[y]?1:2);
+    }
   }
 
-  var tot=paid[0]+paid[1]+paid[2];
-  var bals=[paid[0]-owed[0], paid[1]-owed[1], paid[2]-owed[2]];
+  var tot=paid[0]+paid[1]+paid[2]+paid[3];
+  var bals=[paid[0]-owed[0], paid[1]-owed[1], paid[2]-owed[2], paid[3]-owed[3]];
 
   // Settle (greedy)
   var deb=[],cre=[];
-  for(var i=0;i<3;i++){
+  for(var i=0;i<4;i++){
     if(bals[i]<-0.5) deb.push({i:i,b:bals[i]});
     else if(bals[i]>0.5) cre.push({i:i,b:bals[i]});
   }
@@ -396,7 +409,7 @@ function rSum(){
   }
 
   var prows='';
-  for(var pi=0;pi<3;pi++){
+  for(var pi=0;pi<4;pi++){
     var bal=bals[pi];
     prows+='<div class="cprow" style="background:'+CCOLORS[pi]+'0d;border-color:'+CCOLORS[pi]+'28">'+
       '<div class="cpicon" style="background:'+CCOLORS[pi]+'22;color:'+CCOLORS[pi]+'">💑</div>'+
@@ -452,7 +465,7 @@ function setCP(i){
 function toggleFor(i){
   // must keep at least 1 selected
   var count=0;
-  for(var j=0;j<3;j++) if(forWhom[j]) count++;
+  for(var j=0;j<4;j++) if(forWhom[j]) count++;
   if(forWhom[i]&&count===1) return; // can't deselect last one
   forWhom[i]=!forWhom[i];
   var btns=document.querySelectorAll('.fwbtn');
@@ -488,7 +501,7 @@ function addE(){
   state.expenses.push({
     id:Date.now(), desc:d, amount:a,
     currency:inCur, couple:curCouple,
-    forWhom:[forWhom[0],forWhom[1],forWhom[2]]
+    forWhom:[forWhom[0],forWhom[1],forWhom[2],forWhom[3]]
   });
   document.getElementById('dIn').value='';
   document.getElementById('aIn').value='';
